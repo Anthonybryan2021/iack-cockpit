@@ -1,5 +1,7 @@
 const state = {
-  data: null,
+  current: null,
+  history: [],
+  changelog: [],
   activeScreen: "overview",
   theme: "dark"
 };
@@ -17,12 +19,22 @@ const els = {
   reports: document.getElementById("reports-content")
 };
 
+async function loadJson(path) {
+  const response = await fetch(path);
+  if (!response.ok) throw new Error(`Failed to load ${path}`);
+  return response.json();
+}
+
 async function loadData() {
-  const response = await fetch("./assets/data/mock-data.json?v=4");
-  if (!response.ok) {
-    throw new Error("Could not load mock data.");
-  }
-  state.data = await response.json();
+  const [current, history, changelog] = await Promise.all([
+    loadJson("./assets/data/current-metrics.json?v=5"),
+    loadJson("./assets/data/validation-history.json?v=5"),
+    loadJson("./assets/data/formula-changelog.json?v=5")
+  ]);
+
+  state.current = current;
+  state.history = Array.isArray(history) ? history : [history];
+  state.changelog = Array.isArray(changelog) ? changelog : [changelog];
 }
 
 function badgeClass(status) {
@@ -73,7 +85,7 @@ function setActiveScreen(screenId) {
 }
 
 function renderOverview() {
-  const data = state.data.overview;
+  const data = state.current.overview;
 
   els.overview.innerHTML = `
     <div class="card-grid">
@@ -151,7 +163,17 @@ function renderOverview() {
 }
 
 function renderValidation() {
-  const data = state.data.validationLab;
+  const data = state.current.validationLab;
+  const historyRows = state.history.slice().reverse().map(item => `
+    <tr>
+      <td>${item.timestamp}</td>
+      <td>${item.runId}</td>
+      <td>${item.score}</td>
+      <td>${item.validationStatus}</td>
+      <td>${item.testsPassed}/${item.testsPassed + item.testsFailed}</td>
+      <td>${item.duration}</td>
+    </tr>
+  `).join("");
 
   els.validation.innerHTML = `
     <div class="card-grid">
@@ -187,105 +209,50 @@ function renderValidation() {
           <p>Scenario, execution context, and current run status.</p>
         </div>
         <div class="stack">
-          <div class="summary-row">
-            <span class="summary-label">Scenario</span>
-            <strong>${data.scenario}</strong>
-          </div>
-          <div class="summary-row">
-            <span class="summary-label">Status</span>
-            <span class="badge good">Passed</span>
-          </div>
-          <div class="summary-row">
-            <span class="summary-label">Tests Passed</span>
-            <strong>${data.testsPassed}</strong>
-          </div>
-          <div class="summary-row">
-            <span class="summary-label">Tests Failed</span>
-            <strong>${data.testsFailed}</strong>
-          </div>
-        </div>
-        <div class="action-row">
-          <button class="btn btn-primary" id="simulate-run">Run Validation</button>
-          <button class="btn btn-secondary" id="compare-runs">Compare Runs</button>
+          <div class="summary-row"><span class="summary-label">Scenario</span><strong>${data.scenario}</strong></div>
+          <div class="summary-row"><span class="summary-label">Status</span><span class="badge good">Passed</span></div>
+          <div class="summary-row"><span class="summary-label">Tests Passed</span><strong>${data.testsPassed}</strong></div>
+          <div class="summary-row"><span class="summary-label">Tests Failed</span><strong>${data.testsFailed}</strong></div>
         </div>
       </article>
 
       <article class="card">
         <div class="section-heading">
-          <h3>Run Metadata</h3>
-          <p>Static MVP placeholders for reproducibility and CI alignment.</p>
+          <h3>Execution Log</h3>
+          <p>Current validation run output.</p>
         </div>
-        <ul class="list">
-          <li class="list-item"><strong>Version:</strong> IACK v0.2.0-prep</li>
-          <li class="list-item"><strong>Operator:</strong> Felix local workstation</li>
-          <li class="list-item"><strong>Mode:</strong> Static MVP simulation</li>
-          <li class="list-item"><strong>CI target:</strong> GitHub Actions integration next</li>
-        </ul>
-      </article>
-    </div>
-
-    <div class="card-grid two">
-      <article class="card">
-        <div class="section-heading">
-          <h3>Run Queue</h3>
-          <p>Near-term pipeline stages for validation maturation.</p>
-        </div>
-        <ul class="list">
-          <li class="list-item">Baseline dataset verification</li>
-          <li class="list-item">Metric threshold regression review</li>
-          <li class="list-item">Artifact drift replay test</li>
-          <li class="list-item">Markdown report export validation</li>
-        </ul>
-      </article>
-
-      <article class="card">
-        <div class="section-heading">
-          <h3>Observed Conditions</h3>
-          <p>Signals worth reviewing before the next tagged release.</p>
-        </div>
-        <ul class="list">
-          <li class="list-item">Integrity variance exceeded expected threshold.</li>
-          <li class="list-item">Reproducibility notes were captured successfully.</li>
-          <li class="list-item">Report generation block completed with no fatal errors.</li>
-        </ul>
+        <div class="console">${data.logLines.join("\n")}</div>
       </article>
     </div>
 
     <article class="card">
       <div class="section-heading">
-        <h3>Execution Log</h3>
-        <p>Live validation output placeholder for future metric_validation.py integration.</p>
+        <h3>Validation History</h3>
+        <p>Recent runs captured from the synced metrics workflow.</p>
       </div>
-      <div class="console" id="validation-console">${data.logLines.join("\n")}</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Run ID</th>
+              <th>Score</th>
+              <th>Status</th>
+              <th>Tests</th>
+              <th>Duration</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${historyRows}
+          </tbody>
+        </table>
+      </div>
     </article>
   `;
-
-  const runButton = document.getElementById("simulate-run");
-  const compareButton = document.getElementById("compare-runs");
-  const consoleBox = document.getElementById("validation-console");
-
-  if (runButton && consoleBox) {
-    runButton.addEventListener("click", () => {
-      const extraLines = [
-        "[INFO] Re-running validation workflow",
-        "[INFO] Refreshing metric thresholds",
-        "[INFO] Recomputing integrity confidence",
-        "[PASS] Console state updated",
-        "[DONE] Validation Lab simulation complete"
-      ];
-      consoleBox.textContent += `\n${extraLines.join("\n")}`;
-    });
-  }
-
-  if (compareButton && consoleBox) {
-    compareButton.addEventListener("click", () => {
-      consoleBox.textContent += "\n[INFO] Comparing current run against prior baseline snapshot";
-    });
-  }
 }
 
 function renderIntegrity() {
-  const data = state.data.integrity;
+  const data = state.current.integrity;
 
   els.integrity.innerHTML = `
     <div class="card-grid">
@@ -378,7 +345,11 @@ function downloadText(filename, text, type = "text/plain") {
 }
 
 function buildMarkdownReport() {
-  const { overview, validationLab, integrity, reports } = state.data;
+  const { overview, validationLab, integrity, reports } = state.current;
+  const changelogSection = state.changelog.map(item =>
+    `- ${item.timestamp} | ${item.metric} | ${item.change}`
+  ).join("\n");
+
   return `# IACK Cockpit Report
 
 ## Overview
@@ -405,8 +376,8 @@ function buildMarkdownReport() {
 ### Integrity Summary
 ${integrity.summary}
 
-### Artifact Queue
-${integrity.issues.map(issue => `- ${issue.artifact} | ${issue.severity} | ${issue.status}`).join("\n")}
+## Formula Changelog
+${changelogSection}
 
 ## Reports
 ### Executive Summary
@@ -417,9 +388,6 @@ ${reports.technicalSummary}
 
 ### Research Summary
 ${reports.researchSummary}
-
-### Export Targets
-${reports.exports.map(item => `- ${item}`).join("\n")}
 `;
 }
 
@@ -434,7 +402,7 @@ async function copyFindings() {
 }
 
 function renderReports() {
-  const data = state.data.reports;
+  const data = state.current.reports;
 
   els.reports.innerHTML = `
     <article class="card" style="margin-bottom:22px;">
@@ -466,6 +434,16 @@ function renderReports() {
     <div class="card-grid two">
       <article class="card">
         <div class="section-heading">
+          <h3>Formula Changelog</h3>
+          <p>Tracked metric updates now exposed in the cockpit.</p>
+        </div>
+        <ul class="list">
+          ${state.changelog.map(item => `<li class="list-item"><strong>${item.metric}</strong>: ${item.change}</li>`).join("")}
+        </ul>
+      </article>
+
+      <article class="card">
+        <div class="section-heading">
           <h3>Export Targets</h3>
           <p>Structured outputs for the next documentation pass.</p>
         </div>
@@ -473,24 +451,12 @@ function renderReports() {
           ${data.exports.map(item => `<li class="list-item">${item}</li>`).join("")}
         </ul>
       </article>
-
-      <article class="card">
-        <div class="section-heading">
-          <h3>Distribution Plan</h3>
-          <p>How these reports can support the next MVP phase.</p>
-        </div>
-        <ul class="list">
-          <li class="list-item">Executive snapshot for stakeholders and partners.</li>
-          <li class="list-item">Technical markdown for repo documentation.</li>
-          <li class="list-item">Research notes for validation traceability.</li>
-        </ul>
-      </article>
     </div>
 
     <article class="card">
       <div class="section-heading">
         <h3>Report Actions</h3>
-        <p>Placeholder export actions for the static cockpit MVP.</p>
+        <p>Export current state as markdown.</p>
       </div>
       <div class="action-row">
         <button class="btn btn-primary" id="export-summary">Export Summary</button>

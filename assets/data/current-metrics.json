@@ -1,0 +1,84 @@
+﻿{
+    "reports":  {
+                    "executiveSummary":  "The IACK cockpit MVP shows a stable validation posture with targeted integrity follow-up required.",
+                    "researchSummary":  "The current run supports continued evidence collection, formula refinement, and reproducibility tracking.",
+                    "technicalSummary":  "Validation passed overall, with one threshold variance and two artifacts flagged for investigation.",
+                    "exports":  [
+                                    "Executive markdown summary",
+                                    "Technical findings export",
+                                    "Research traceability notes"
+                                ]
+                },
+    "validationLab":  {
+                          "logLines":  [
+                                           "[INFO] Validation workflow started",
+                                           "[INFO] Loading baseline dataset",
+                                           "[PASS] Metric thresholds loaded",
+                                           "[PASS] Integrity checks completed",
+                                           "[WARN] 1 variance exceeded expected threshold",
+                                           "[DONE] Validation workflow completed"
+                                       ],
+                          "testsPassed":  18,
+                          "runId":  "run-2026-05-24-001",
+                          "duration":  "00:00:14",
+                          "activeDataset":  "baseline-dataset-v1",
+                          "scenario":  "Regression validation",
+                          "testsFailed":  1
+                      },
+    "integrity":  {
+                      "driftEvents":  3,
+                      "issues":  [
+                                     {
+                                         "status":  "Review",
+                                         "artifact":  "artifact-manifest.json",
+                                         "severity":  "Medium"
+                                     },
+                                     {
+                                         "status":  "Investigate",
+                                         "artifact":  "validation-summary.json",
+                                         "severity":  "High"
+                                     }
+                                 ],
+                      "exceptions":  2,
+                      "score":  78,
+                      "summary":  "Integrity posture is stable but requires follow-up on detected drift and two exceptions.",
+                      "verifiedArtifacts":  24
+                  },
+    "runId":  "run-2026-05-24-001",
+    "overview":  {
+                     "validationStatus":  "Passed",
+                     "changes":  [
+                                     "Integrity score dropped 3 points after artifact drift detection.",
+                                     "Validation coverage improved after metric test alignment.",
+                                     "Report export template updated for research review."
+                                 ],
+                     "scoreDelta":  "+4.1%",
+                     "confidence":  0.91,
+                     "pillars":  [
+                                     {
+                                         "status":  "warning",
+                                         "score":  78,
+                                         "name":  "Integrity"
+                                     },
+                                     {
+                                         "status":  "good",
+                                         "score":  84,
+                                         "name":  "Authenticity"
+                                     },
+                                     {
+                                         "status":  "good",
+                                         "score":  81,
+                                         "name":  "Confidentiality"
+                                     },
+                                     {
+                                         "status":  "good",
+                                         "score":  85,
+                                         "name":  "Key Management"
+                                     }
+                                 ],
+                     "openFindings":  5,
+                     "lastRun":  "2026-05-24 14:15:00",
+                     "iackScore":  82,
+                     "nextAction":  "Connect Python validation outputs and add evidence traceability."
+                 }
+}

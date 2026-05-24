@@ -1,0 +1,7 @@
+﻿{
+    "timestamp":  "2026-05-24 14:30:40",
+    "metric":  "IntegrityScore",
+    "change":  "Initial cockpit-connected baseline formula snapshot",
+    "reason":  "Establish first tracked version for drift and validation analysis",
+    "impact":  "Provides traceable starting point for future formula revisions"
+}

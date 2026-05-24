@@ -1,77 +1,60 @@
-# IACK Cockpit
+﻿# IACK Cockpit
 
-IACK Cockpit is a static MVP dashboard for the IACK framework. It gives a validation-first view of framework posture across four screens: Overview, Validation Lab, Integrity, and Reports.
+IACK Cockpit is a validation-first static dashboard for the IACK framework. It provides an operational view of framework posture, validation runs, integrity findings, and report outputs.
 
-## What it does
+## Purpose
+The cockpit exists to make IACK metrics easier to inspect, validate, and communicate. It acts as an MVP control surface for connecting metric outputs, validation evidence, and documentation into a single interface.
 
-- Shows a cockpit-style summary of IACK metrics.
-- Simulates validation workflows in the Validation Lab.
-- Surfaces integrity status, drift, and exceptions.
-- Generates a Markdown report export from the Reports screen.
-- Supports light and dark theme switching.
+## Current MVP Scope
+- Overview
+- Validation Lab
+- Integrity
+- Reports
 
-## Screens
+## Data Workflow
+1. Python produces metric output JSON.
+2. PowerShell syncs the latest JSON artifact into the cockpit.
+3. The cockpit loads current metrics, validation history, and formula changelog files.
+4. GitHub Pages serves the static application.
 
-### Overview
-A high-level posture view with scorecards, pillar scores, and recent changes.
+## Repository Structure
+```text
+iack-cockpit/
+├── index.html
+├── README.md
+├── docs/
+│   └── architecture.md
+├── outputs/
+│   └── metrics-output.json
+├── scripts/
+├── assets/
+│   ├── css/
+│   ├── js/
+│   │   └── app.js
+│   └── data/
+│       ├── current-metrics.json
+│       ├── validation-history.json
+│       └── formula-changelog.json
+```
 
-### Validation Lab
-A workspace for validation runs, test summaries, run metadata, and execution logs.
-
-### Integrity
-A focused view for integrity score, drift events, artifact review, and exceptions.
-
-### Reports
-A reporting area for executive, technical, and research-facing summaries with export actions.
-
-## Live demo
-
-If GitHub Pages is enabled, the app is published as a static site from the repository root.
-
-## Local run
-
-This project is a static HTML app. To preview it locally:
-
+## Local Run
 ```powershell
 python -m http.server 8080
 ```
 
 Then open:
-
 ```text
 http://localhost:8080
 ```
 
-## Repository structure
+## Documentation
+- Architecture: `docs/architecture.md`
 
-```text
-iack-cockpit/
-├── index.html
-├── CNAME
-├── .nojekyll
-├── assets/
-│   ├── css/
-│   │   └── style.css
-│   ├── js/
-│   │   └── app.js
-│   └── data/
-│       └── mock-data.json
-└── README.md
-```
+## Next Milestones
+- Connect to real Python metric outputs
+- Add richer validation history trends
+- Improve metric formula traceability
+- Expand documentation and CI integration
 
-## Release status
-
+## Status
 Current milestone: `v0.2.0-prep`
-
-This release is an MVP checkpoint for validation, testing, documentation, and GitHub Pages deployment.
-
-## Planned next steps
-
-- Connect the Validation Lab to real framework outputs.
-- Add CI checks for validation and linting.
-- Expand report generation and export options.
-- Refine metrics visualization and traceability notes.
-
-## License
-
-No license has been selected yet.
