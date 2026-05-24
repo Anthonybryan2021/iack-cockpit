@@ -1,0 +1,72 @@
+{
+  "overview": {
+    "iackScore": 82,
+    "scoreDelta": "+4.1%",
+    "lastRun": "2026-05-23 16:58 EDT",
+    "validationStatus": "Passed",
+    "confidence": "0.91",
+    "openFindings": 5,
+    "nextAction": "Investigate integrity drift in deployment artifacts.",
+    "pillars": [
+      { "name": "Integrity", "score": 78, "status": "warning" },
+      { "name": "Authenticity", "score": 84, "status": "good" },
+      { "name": "Confidentiality", "score": 81, "status": "good" },
+      { "name": "Key Management", "score": 86, "status": "good" }
+    ],
+    "changes": [
+      "Integrity score dropped 3 points after artifact drift detection.",
+      "Validation coverage improved after new metric test alignment.",
+      "Report export template updated for research review."
+    ]
+  },
+  "validationLab": {
+    "activeDataset": "baseline-lab-dataset-v0.2",
+    "scenario": "Metric validation dry run",
+    "runId": "VAL-2026-0523-001",
+    "testsPassed": 18,
+    "testsFailed": 2,
+    "duration": "00:01:34",
+    "logLines": [
+      "[INFO] Loading dataset baseline-lab-dataset-v0.2",
+      "[INFO] Running compute_iack_metrics checks",
+      "[INFO] Executing validation thresholds",
+      "[WARN] Integrity drift variance exceeded expected threshold",
+      "[PASS] Reproducibility metadata captured",
+      "[PASS] Report generation block completed"
+    ]
+  },
+  "integrity": {
+    "score": 78,
+    "driftEvents": 3,
+    "verifiedArtifacts": 42,
+    "exceptions": 2,
+    "summary": "Integrity remains stable overall, but two recent artifacts exceeded expected validation drift thresholds.",
+    "issues": [
+      {
+        "artifact": "deploy_manifest_v17.json",
+        "severity": "Medium",
+        "status": "Needs review"
+      },
+      {
+        "artifact": "metrics_snapshot_2026_05_23.csv",
+        "severity": "Low",
+        "status": "Document variance"
+      },
+      {
+        "artifact": "validation_output_hash.txt",
+        "severity": "Medium",
+        "status": "Re-run recommended"
+      }
+    ]
+  },
+  "reports": {
+    "executiveSummary": "IACK posture remains strong with a score of 82, though integrity-related drift should be reviewed before release tagging.",
+    "technicalSummary": "Validation completed with 18 passing checks and 2 flagged conditions tied to integrity threshold variance.",
+    "researchSummary": "Current outputs remain suitable for internal experimentation and documentation drafting, pending follow-up on reproducibility notes.",
+    "exports": [
+      "Executive Summary PDF",
+      "Technical Validation Markdown",
+      "Research Notes JSON"
+    ]
+  }
+}

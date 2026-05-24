@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IACK Cockpit MVP</title>
+  <link rel="stylesheet" href="./assets/css/style.css?v=4" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">IA</div>
+        <h1>IACK Cockpit</h1>
+        <p>Validation-first security metrics workspace for the IACK framework MVP.</p>
+      </div>
+
+      <nav class="nav-group" aria-label="Primary navigation">
+        <button class="nav-button active" data-screen="overview">Overview</button>
+        <button class="nav-button" data-screen="validation">Validation Lab</button>
+        <button class="nav-button" data-screen="integrity">Integrity</button>
+        <button class="nav-button" data-screen="reports">Reports</button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div><strong>Version:</strong> v0.2.0-prep</div>
+        <div><strong>Mode:</strong> Local MVP</div>
+        <div><strong>Status:</strong> Active build</div>
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <div>
+          <h2 id="topbar-title">Overview</h2>
+          <p id="topbar-subtitle">Current IACK posture, changes, and next actions.</p>
+        </div>
+
+        <div class="topbar-meta">
+          <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle theme">Theme</button>
+          <div class="meta-chip">Environment: Local</div>
+          <div class="meta-chip">Source: Mock Data</div>
+          <div class="meta-chip">Focus: v0.2.0</div>
+        </div>
+      </header>
+
+      <main class="main-panel">
+        <section id="screen-overview" class="screen active">
+          <div id="overview-content"></div>
+        </section>
+
+        <section id="screen-validation" class="screen">
+          <div id="validation-content"></div>
+        </section>
+
+        <section id="screen-integrity" class="screen">
+          <div id="integrity-content"></div>
+        </section>
+
+        <section id="screen-reports" class="screen">
+          <div id="reports-content"></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="./assets/js/app.js?v=4"></script>
+</body>
+</html>
