@@ -1,11 +1,24 @@
-﻿{
-    "timestamp":  "2026-05-24 14:30:20",
-    "runId":  "run-2026-05-24-001",
-    "score":  82,
-    "validationStatus":  "Passed",
-    "confidence":  0.91,
-    "testsPassed":  18,
-    "testsFailed":  1,
-    "duration":  "00:00:14",
-    "source":  "metrics-output.json"
-}
+[
+    {
+        "timestamp":  "2026-05-24 14:30:20",
+        "runId":  "run-2026-05-24-001",
+        "score":  82,
+        "validationStatus":  "Passed",
+        "confidence":  0.91,
+        "testsPassed":  18,
+        "testsFailed":  1,
+        "duration":  "00:00:14",
+        "source":  "metrics-output.json"
+    },
+    {
+        "runId":  "d7ef1ff6-d164-4cdf-ac13-9f28c9f02b72",
+        "assessmentId":  "iack-local-001",
+        "timestamp":  "2026-06-05T14:21:33.068900Z",
+        "status":  "Passed",
+        "confidence":  0.91,
+        "overallScore":  81,
+        "openFindings":  5,
+        "source":  "run-iack-pipeline.ps1",
+        "summarySource":  "assessment-summary.json"
+    }
+]
