@@ -1,15 +1,11 @@
 {
   "assessmentId": "iack-local-001",
-  "timestamp": "2026-06-05T14:13:53.139881Z",
-  "overallScore": 81,
+  "integrity": 78,
+  "authenticity": 84,
+  "confidentiality": 81,
   "validationStatus": "Passed",
   "confidence": 0.91,
   "openFindings": 5,
-  "pillars": {
-    "integrity": 78,
-    "authenticity": 84,
-    "confidentiality": 81
-  },
   "changeSummary": [
     "Integrity score dropped 3 points after artifact drift detection.",
     "Validation coverage improved after metric test alignment.",
