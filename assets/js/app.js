@@ -99,7 +99,7 @@ function renderOverview() {
       <article class="card">
         <div class="eyebrow">Validation Status</div>
         <div class="value">${data.validationStatus}</div>
-        <div class="support">Latest run outcome</div>
+        <div class="support">Latest live outcome</div>
       </article>
 
       <article class="card">
