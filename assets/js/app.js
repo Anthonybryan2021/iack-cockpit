@@ -441,7 +441,7 @@ function renderReports() {
         <h3>Executive Summary</h3>
         <p>High-level framing for leadership and external stakeholders.</p>
       </div>
-      <div class="report-block">${data?.executiveSummary}</div>
+      <div class="report-block">${data?.executiveSummary ?? "Executive summary not yet mapped for this dataset."}</div>
     </article>
 
     <div class="card-grid two">
@@ -450,7 +450,7 @@ function renderReports() {
           <h3>Technical Summary</h3>
           <p>Operational notes for engineering and validation work.</p>
         </div>
-        <div class="report-block">${data?.technicalSummary}</div>
+        <div class="report-block">${data?.technicalSummary ?? "Technical summary not yet mapped for this dataset."}</div>
       </article>
 
       <article class="card">
@@ -458,7 +458,7 @@ function renderReports() {
           <h3>Research Summary</h3>
           <p>Support for reproducibility and future academic framing.</p>
         </div>
-        <div class="report-block">${data?.researchSummary}</div>
+        <div class="report-block">${data?.researchSummary ?? "Research summary not yet mapped for this dataset."}</div>
       </article>
     </div>
 
@@ -541,6 +541,7 @@ async function init() {
 }
 
 init();
+
 
 
 
