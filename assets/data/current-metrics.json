@@ -1,18 +1,56 @@
-{
-  "assessmentId": "iack-local-001",
-  "timestamp": "2026-06-05T14:21:33.068900Z",
-  "overallScore": 81,
-  "validationStatus": "Passed",
-  "confidence": 0.91,
-  "openFindings": 5,
-  "pillars": {
-    "integrity": 78,
-    "authenticity": 84,
-    "confidentiality": 81
-  },
-  "changeSummary": [
-    "Integrity score dropped 3 points after artifact drift detection.",
-    "Validation coverage improved after metric test alignment.",
-    "Report export template updated for research review."
-  ]
+﻿{
+    "assessmentId":  "iack-local-001",
+    "timestamp":  "2026-06-05T14:21:33.068900Z",
+    "overallScore":  81,
+    "validationStatus":  "Passed",
+    "confidence":  0.91,
+    "openFindings":  5,
+    "pillars":  {
+                    "integrity":  78,
+                    "authenticity":  84,
+                    "confidentiality":  81
+                },
+    "changeSummary":  [
+                          "Integrity score dropped 3 points after artifact drift detection.",
+                          "Validation coverage improved after metric test alignment.",
+                          "Report export template updated for research review."
+                      ],
+    "scenario":  "Nightly framework validation sync",
+    "duration":  "2m 14s",
+    "logLines":  [
+                     "Loaded current metrics snapshot.",
+                     "Validated pillar scoring inputs.",
+                     "Checked formula changelog consistency.",
+                     "Prepared report exports."
+                 ],
+    "integrity":  {
+                      "score":  78,
+                      "driftEvents":  2,
+                      "verifiedArtifacts":  14,
+                      "exceptions":  1,
+                      "summary":  "Integrity remains stable overall, with minor drift detected in recent artifact checks and one exception awaiting review.",
+                      "issues":  [
+                                     {
+                                         "artifact":  "metrics-baseline.json",
+                                         "severity":  "Medium",
+                                         "status":  "Review"
+                                     },
+                                     {
+                                         "artifact":  "validation-output.md",
+                                         "severity":  "Low",
+                                         "status":  "Monitor"
+                                     }
+                                 ]
+                  },
+    "reports":  {
+                    "executiveSummary":  "The current IACK posture remains stable, validation is passing, and the main near-term priority is resolving integrity drift before the next release cycle.",
+                    "technicalSummary":  "Current cockpit telemetry is loading correctly across overview, validation, integrity, and reporting views. Remaining work is focused on enriching source metrics and tightening artifact review workflows.",
+                    "researchSummary":  "The cockpit now provides a reproducible operational snapshot that can support documentation, validation traceability, and future academic framing of the IACK framework.",
+                    "exports":  [
+                                    "Markdown summary",
+                                    "Validation snapshot",
+                                    "Integrity review notes",
+                                    "Research briefing"
+                                ]
+                }
 }
