@@ -63,8 +63,46 @@ async function loadData() {
     loadJson("./assets/data/formula-changelog.json?v=5")
   ]);
 
-  state.current = { overview: normalizeMetrics(current) };
-  state.history = (Array.isArray(history) ? history : [history]).map(normalizeHistoryEntry);
+  const normalizedCurrent = normalizeMetrics(current);
+  const normalizedHistory = (Array.isArray(history) ? history : [history]).map(normalizeHistoryEntry);
+  const latestHistory = normalizedHistory.length ? normalizedHistory[normalizedHistory.length - 1] : null;
+
+  state.current = {
+    overview: {
+      ...normalizedCurrent,
+      overallScore: normalizedCurrent?.overallScore ?? normalizedCurrent?.score ?? 0,
+      scoreDelta: normalizedCurrent?.scoreDelta ?? 0,
+      pillars: normalizedCurrent?.pillars ?? {},
+      changeSummary: normalizedCurrent?.changeSummary ?? [],
+      timestamp: normalizedCurrent?.timestamp ?? normalizedCurrent?.lastRun ?? null
+    },
+    validationLab: {
+      activeDataset: "./assets/data/validation-history.json",
+      runId: latestHistory?.runId ?? "unknown-run",
+      assessmentId: latestHistory?.assessmentId ?? latestHistory?.runId ?? "unknown-run",
+      scenario: current?.scenario ?? "Latest synced validation run",
+      testsPassed: latestHistory?.testsPassed ?? normalizedCurrent?.testsPassed ?? 0,
+      testsFailed: latestHistory?.testsFailed ?? normalizedCurrent?.testsFailed ?? 0,
+      duration: latestHistory?.duration ?? current?.duration ?? "N/A",
+      logLines: current?.logLines ?? ["Validation data loaded successfully."]
+    },
+    integrity: {
+      score: current?.integrity?.score ?? normalizedCurrent?.pillars?.integrity ?? 0,
+      driftEvents: current?.integrity?.driftEvents ?? 0,
+      verifiedArtifacts: current?.integrity?.verifiedArtifacts ?? 0,
+      exceptions: current?.integrity?.exceptions ?? 0,
+      summary: current?.integrity?.summary ?? "Integrity data is not yet fully mapped for this dataset. Review drift, exceptions, and flagged artifacts before release.",
+      issues: current?.integrity?.issues ?? []
+    },
+    reports: {
+      executiveSummary: current?.reports?.executiveSummary ?? "Executive summary not yet mapped for this dataset.",
+      technicalSummary: current?.reports?.technicalSummary ?? "Technical summary not yet mapped for this dataset.",
+      researchSummary: current?.reports?.researchSummary ?? "Research summary not yet mapped for this dataset.",
+      exports: current?.reports?.exports ?? ["Markdown summary"]
+    }
+  };
+
+  state.history = normalizedHistory;
   state.changelog = Array.isArray(changelog) ? changelog : [changelog];
 }
 
@@ -541,6 +579,7 @@ async function init() {
 }
 
 init();
+
 
 
 
