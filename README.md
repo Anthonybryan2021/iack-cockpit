@@ -57,4 +57,5 @@ http://localhost:8080
 - Expand documentation and CI integration
 
 ## Status
-Current milestone: `v0.2.0-prep`
+Current milestone: `v0.2.1-prep`
+
