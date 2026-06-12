@@ -1,14 +1,15 @@
-[
+﻿[
     {
-        "timestamp":  "2026-05-24 14:30:20",
-        "runId":  "run-2026-05-24-001",
-        "score":  82,
+        "timestamp":  "2026-06-12T09:30:00Z",
+        "runId":  "run-2026-06-12-001",
+        "score":  81,
         "validationStatus":  "Passed",
         "confidence":  0.91,
         "testsPassed":  18,
         "testsFailed":  1,
-        "duration":  "00:00:14",
-        "source":  "metrics-output.json"
+        "duration":  "2m 14s",
+        "source":  "metrics-output.json",
+        "assessmentId":  "run-2026-06-12-001"
     },
     {
         "runId":  "d7ef1ff6-d164-4cdf-ac13-9f28c9f02b72",
