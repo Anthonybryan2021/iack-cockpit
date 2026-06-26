@@ -28,3 +28,18 @@ GitHub Pages publishes the application as a static site.
 - Trend visualizations
 - Stronger evidence traceability
 - Research-oriented reporting outputs
+
+## Boundaries
+- The IACK framework owns metric generation, validation logic, report writing, and the production of source JSON artifacts.
+- The IACK Cockpit owns static rendering, dashboard presentation, and read-only consumption of published JSON artifacts.
+- The cockpit does not calculate authoritative metrics; it displays artifacts produced by the framework.
+- PowerShell sync scripts and future GitHub Actions automation are transport layers between framework outputs and cockpit inputs, not alternate sources of truth.
+
+## Invariants
+- `outputs/metrics-output.json` is the framework-produced source artifact for current metric export.
+- `assets/data/current-metrics.json` is the cockpit-ready synchronized copy used by the UI.
+- `assets/data/validation-history.json` is the append-only validation evidence record for cockpit history views.
+- `assets/data/formula-changelog.json` is the traceability record for metric formula changes.
+- Cockpit views must map to versioned JSON artifacts, not handwritten dashboard values.
+- Any change to artifact structure must be reflected in both the framework export path and cockpit documentation before release.
+- GitHub Pages publishes only the static cockpit surface; it is not the metric computation environment.
